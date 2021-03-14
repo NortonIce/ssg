@@ -21,7 +21,7 @@ const actions = {
 	'build_mine': function (_state) {
 		if (_state.coin >= 10) 
 		{
-			_state.coin -= 10;
+			_state.coin -= _state.prices.mine;
 			_state.mines += 1;
 		}
 		return _state;
