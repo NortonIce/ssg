@@ -1,0 +1,9 @@
+
+* {
+	     -ms-touch-action: manipulation;
+	         touch-action: manipulation;
+	 }
+
+.alt-link {
+	color: #aaaaaa;
+}

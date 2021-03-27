@@ -11,7 +11,7 @@ app.use(express.static('public'));
 
 app.use('/api/v1', require('./controllers/records.js'));
 
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, '0.0.0.0', ()=>{
 	console.log('Listening at port 80');
 });
 
