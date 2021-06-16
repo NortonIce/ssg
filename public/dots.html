@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Пример игры</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='./index.css'/>
+</head>
+
+<body onload="start()" align="center">
+    <canvas height="500" width="300" id="example">Обновите браузер</canvas>
+    <script type="text/javascript">
+    var example = document.getElementById("example"),
+        ctx = example.getContext('2d');
+	example.onclick = function () {
+		stepDown(32);
+	}
+    document.onkeydown = function checkKeycode(event) {
+            var keycode;
+            if (!event) var event = window.event;
+            if (event.keyCode) keycode = event.keyCode; // IE
+            else if (event.which) keycode = event.which; // all browsers
+            stepDown(keycode);
+        }
+        // ctx.fillRect(0, 0, example.width, example.height);
+    var userX = 15;
+    var userY = 15;
+    var direction = 1;
+
+    var iv;
+
+    var stopStep = false;
+
+    var map = [];
+
+    function start() {
+        generateMap(10);
+        clearInterval(iv);
+        userX = 15;
+        userY = 15;
+        iv = setInterval(gameLoop, 350);
+    }
+
+    function gameLoop() {
+        // body...
+        if (direction > 0 && userX + 30 >= example.width) direction = -1;
+        if (direction < 0 && userX - 30 <= 0) direction = 1;
+        userX += 30 * direction;
+        draw();
+        stopStep = false;
+    }
+
+    function generateMap(dif) {
+        map = new Array(dif);
+        for (var i = 0; i < map.length; i++) {
+            map[i] = new Array(10);
+            for (var j = 0; j < map[i].length; j++) {
+                if (Math.random() > 0.8) {
+                    map[i][j] = 1;
+                } else {
+                    map[i][j] = 0;
+                }
+            }
+        }
+        console.log(map);
+        console.log(map.length);
+        console.log(map[0].length);
+        console.log(map[0][0]);
+    }
+
+    function draw() {
+        // Очищаем всё
+        ctx.clearRect(0, 0, example.width, example.height);
+        // Рисуем пользователя
+        ctx.beginPath();
+        ctx.arc(userX, userY, 14, 0, Math.PI * 2, false);
+        ctx.fillStyle = 'green';
+        ctx.fill();
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
+        // Рисуем карту
+        for (var i = 0; i < map.length; i++) {
+            for (var j = 0; j < map[i].length; j++) {
+                if (map[i][j] == 1) {
+                    var ctx1 = example.getContext('2d');
+                    ctx1.beginPath();
+                    ctx1.arc(15 + 30 * j, 45 + 30 * i, 14, 0, Math.PI * 2, false);
+                    if (15 + 30 * j == userX && 45 + 30 * i == userY) {
+                    	clearInterval(iv); 
+                    	alert('Ты проиграл!');
+                    	start();
+                    }
+                    ctx1.fillStyle = 'red';
+                    ctx1.fill();
+                    ctx1.strokeStyle = 'red';
+                    ctx1.stroke();
+                }
+            }
+        }
+
+    }
+
+    function stepDown(e) {
+        if (e == 32 && !stopStep) {
+            //alert('sdfsd');
+            stopStep = true;
+            userY += 30;
+            if (userY > 15 + 30 * 11) {
+            	clearInterval(iv); 
+                alert('Ты выйграл!');
+                start();
+            }
+        }
+    }
+
+    </script>
+    <br>
+    <button onclick="start()">Старт</button>
+    <br/>
+    <br/>
+    <a href='./'>Back to home page</a>
+</body>
+
+</html>

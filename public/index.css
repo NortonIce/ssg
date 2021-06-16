@@ -5,5 +5,15 @@
 	 }
 
 .alt-link {
-	color: #aaaaaa;
+	color: #212e53;
+}
+
+html {
+	color: #ce6a6b;
+	background: smokewhite;
+}
+
+body {
+	padding: 10px 10%;
+	border: 1px solid;
 }
