@@ -10,11 +10,12 @@
 <body onload="start()" align="center">
     <canvas height="500" width="300" id="example">Обновите браузер</canvas>
     <script type="text/javascript">
-    var example = document.getElementById("example"),
+    var example = document.getElementById("example")
         ctx = example.getContext('2d');
 	example.onclick = function () {
 		stepDown(32);
 	}
+	var timer = document.getElementById('tmr')
     document.onkeydown = function checkKeycode(event) {
             var keycode;
             if (!event) var event = window.event;
@@ -22,7 +23,6 @@
             else if (event.which) keycode = event.which; // all browsers
             stepDown(keycode);
         }
-        // ctx.fillRect(0, 0, example.width, example.height);
     var userX = 15;
     var userY = 15;
     var direction = 1;
@@ -33,8 +33,8 @@
 
     var map = [];
 
-    function start() {
-        generateMap(10);
+    function start(prevMap) {
+        if (!prevMap) generateMap(10);
         clearInterval(iv);
         userX = 15;
         userY = 15;
@@ -86,9 +86,13 @@
                     ctx1.beginPath();
                     ctx1.arc(15 + 30 * j, 45 + 30 * i, 14, 0, Math.PI * 2, false);
                     if (15 + 30 * j == userX && 45 + 30 * i == userY) {
-                    	clearInterval(iv); 
+                    	clearInterval(iv);
                     	alert('Ты проиграл!');
-                    	start();
+						if (window.confirm('Generate new map?')) {
+							start();
+						} else {
+                    		start(map);
+						}
                     }
                     ctx1.fillStyle = 'red';
                     ctx1.fill();
@@ -106,7 +110,7 @@
             stopStep = true;
             userY += 30;
             if (userY > 15 + 30 * 11) {
-            	clearInterval(iv); 
+            	clearInterval(iv);
                 alert('Ты выйграл!');
                 start();
             }
@@ -114,6 +118,9 @@
     }
 
     </script>
+	<br/>
+	<div>Timer:</div>
+	<div id='tmr'></div>
     <br>
     <button onclick="start()">Старт</button>
     <br/>

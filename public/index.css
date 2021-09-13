@@ -17,3 +17,16 @@ body {
 	padding: 10px 10%;
 	border: 1px solid;
 }
+
+.page-buttons-list {
+	display: flex;
+	flex-direction: row;
+}
+
+.page-button {
+	border: 1px solid;
+	height: 120px;
+	width: 100px;
+	margin: 5px;
+	padding: 5px;
+}

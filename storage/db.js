@@ -1,56 +1,100 @@
 const { MongoClient } = require("mongodb");
-const uri = 'mongodb://mongodb0.example.com:27017';
-
-
-const mongoClient = new MongoClient(uri, {
-	useUnifiedTopology: true
-});
+const mongodb = require('mongodb');
+const uri = 'mongodb://localhost:27017';
 
 async function run() {
 	try {
+		//		let db = new Database();
 		console.log('start');
-		//let n = await get();
-		//console.log('get result', n);
-		add([{name: 'Norton'}]);
-
+		//		db.crColl('mg');
+		//await db.get('test');
 	} catch(e) {
 		console.log(e);
 	} finally {
 		console.log('end');
-		await mongoClient.close();
 	}
 }
 
-async function add(users) {
-	let p = new Promise((resolve, reject) => {
-		mongoClient.connect(function (err, client) {
-			const db = client.db('userdb');
-			const collection = db.collection('users');
-			collection.insertMany(users, function (err, results) {
-				console.log(results);
-				resolve(results);
-				client.close();
-			});
-		});
-	});
-	return await p;
-}
+class Database {
 
-async function get() {
-	let p = new Promise((resolve, reject) => {
-		mongoClient.connect(function (err, client) {
-			const db = client.db('userdb');
-			const collection = db.collection('users');
-			collection.find().toArray(function (err, results) {
-				resolve(results);
-				console.log(err);
-				console.log(results);
-				client.close();
+	constructor(databaseName) {
+		if (databaseName) {
+			this.dbName = databaseName;
+		} else {
+			this.dbName = 'test_db';
+		}
+	}
+
+	async crColl(collectionName) {
+		let _dbName = this.dbName;
+		MongoClient.connect(uri, { useUnifiedTopology: true }, function (err, db) {
+			if (err) throw err;
+			var dbo = db.db(_dbName);
+			dbo.createCollection(collectionName, function (err) {
+				if (err) throw err;
+				db.close();
 			});
 		});
-	});
-	return await p;
+	}
+
+	async add(myobj, collectionName) {
+		let _dbName = this.dbName;
+		MongoClient.connect(uri, { useUnifiedTopology: true }, function (err, db) {
+			if (err) throw err;
+			var dbo = db.db(_dbName);
+			console.log('inserting collection');
+			dbo.collection(collectionName).update(myobj, myobj, {upsert: true});
+			console.log('Database created');
+		});
+		return ;
+	}
+
+	async get(collectionName) {
+		let _dbName = this.dbName;
+		let p = new Promise((resolve, reject) => {
+			MongoClient.connect(uri, { useUnifiedTopology: true }, function (err, db) {
+				if (err) throw err;
+				var dbo = db.db(_dbName);
+				var cursor = dbo.collection(collectionName).find({});
+				let result = [];
+				console.log('iterating over cursor');
+				result = cursor.toArray();	
+				console.log('stop iterating');
+				console.log(result);
+				resolve(result);
+			});
+		});
+		return await p;
+	}
+
+	async deleteById(id, collectionName) {
+		let _dbName = this.dbName;
+		let p = new Promise((resolve, reject) => {
+			MongoClient.connect(uri, { useUnifiedTopology: true }, function (err, db) {
+				if (err) throw err;
+				var dbo = db.db(_dbName);
+				dbo.collection(collectionName).deleteOne({_id: new mongodb.ObjectID(id) });
+			});
+		});
+		return await p;
+	}
+
+	async getAllCollections() {
+		let _dbName = this.dbName;
+		let p = new Promise((resolve, reject) => {
+			MongoClient.connect(uri, { useUnifiedTopology: true }, function (err, db) {
+				if (err) throw err;
+				var dbo = db.db(_dbName);
+				let collections = 
+					dbo.listCollections().toArray();
+				resolve(collections);
+			});
+		});
+		return await p;
+	}
+
 }
 
 run().catch(console.dir);
 
+module.exports = Database; 

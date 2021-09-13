@@ -10,8 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "express-winston": "^4.1.0",
     "mongodb": "^3.6.5",
-    "mongoose": "^5.12.13"
+    "mongoose": "^5.12.13",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^7.28.0"

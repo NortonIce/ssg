@@ -4,7 +4,54 @@
 	</head>
 	<body>
 		<h1>Backend test</h1>
+		<div>
+			<input type='text' id='inp_name' />
+			<button id='btn_save'>Save</button>
+			<button id='btn_del'>Delete</button>
+		</div>
+		<div id='host'>
+
+		</div>
 		<a href='./'>Back to home page</a>
+		<script>
+			const host = document.getElementById('host');
+const saveButton = document.getElementById('btn_save');
+const deleteButton = document.getElementById('btn_del');
+const nameInput = document.getElementById('inp_name');
+var data = [];
+saveButton.addEventListener('click', async function (e) {
+	console.log(e);
+	let name = nameInput.value;
+	let result = await fetch('https://nortonice.tk/api/minigame/add', {
+		method: 'POST',
+		body: JSON.stringify({name: name}),
+		headers: {
+			'Content-Type': 'application/json'
+			// 'Content-Type': 'application/x-www-form-urlencoded',
+		},
+	});
+	bind();
+});
+deleteButton.addEventListener('click', async function (e) {
+	console.log(e);
+	let d = data.find(x=>x._id == nameInput.value);
+	let id = d._id;
+	await fetch('https://nortonice.tk/api/minigame/del?id=' + id, {
+		method: 'DELETE'
+	});
+	bind();
+});
+async function bind () {
+	let entities = await fetch('https://nortonice.tk/api/minigame/get');
+	data = await entities.json();
+	host.innerHTML = data.map(x => ('<div>' +
+		' id: [' + x._id + ']' +
+		' name: ' + x.name +
+		'</div>'
+	)).join('');
+};
+bind();
+		</script>
 	</body>
 
 </html>

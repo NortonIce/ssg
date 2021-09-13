@@ -43,6 +43,15 @@ apiv1.post('/add', async function (req, res) {
 	}
 });
 
+apiv1.post('/place', async function (req, res) {
+	try {
+
+	} catch (e) {
+
+
+	}
+});
+
 apiv1.delete('/del', function (req,res) {
 	try {
 		if (req.query.id == undefined) {
