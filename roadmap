@@ -1,0 +1,24 @@
+Roadmap
+
+Storage
+1) Built-in check is collection exist
+2) Check if database exist
+3) Retrieving all databases names
+4) Query search for an entity
+5) Mass addition
+6) Replace deprecated methods
+
+Api
+X) POST-methods
+2) PATCH-methods
+3) PUT-methods(?)
+4) Headers processing
+5) Authentication/Authorization
+
+Service
+1) User profiles
+
+Front-end
+1) Good design
+2) Login/Logout
+3) Profile page

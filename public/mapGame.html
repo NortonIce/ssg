@@ -1,0 +1,23 @@
+<html>
+	<head>
+
+	</head>
+	<body>
+		<h1>Map Game</h1>
+		<div id='host'>
+
+		</div>
+		<a href='./'>Back to home page</a>
+		<script charset="utf-8">
+			const host = document.getElementById('host');
+			console.log(host);
+			for(let i = 0; i < 10; i++) {
+			host.innerHTML+='<div>';
+			for(let j = 0; j < 10; j++) {
+				host.innerHTML+= '<button id='+i +'' + j +'>[ ]</button>';
+			}
+				host.innerHTML+='</div>';
+			}
+		</script>
+	</body>
+</html>
